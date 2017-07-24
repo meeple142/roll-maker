@@ -1,44 +1,15 @@
-/*jslint browser:true */
+/*jslint browser:true*/
 /*global moment, Handlebars, console*/
 
 function rollMaker(peopleStr, dateStartStr, dateEndStr) {
     'use strict';
     var i, tempdate, htmlOut, currentMonth, currentWeek, peopleGroups,
         dateStart = moment(dateStartStr, 'M-D-YY'),
-        //dateStart = moment([2017, 8, 1]),
         dateCounter = moment(dateStart),
         dateEnd = moment(dateEndStr, 'M-D-YY'),
-        //dateEnd = moment([2018, 4, 31]),
         months = [],
         dayCount = dateEnd.diff(dateStart, 'days'),
         template = Handlebars.compile(document.querySelector('#template').innerHTML),
-        peopleOld = [
-            {
-                name: "John Taylor",
-                daysPresent: "M-F"
-            }, {
-                name: "Joseph Smith",
-                daysPresent: "M-F"
-            }, {
-                name: "Emma Smith",
-                daysPresent: "M-F"
-            }, {
-                name: "Joshua McKinney",
-                daysPresent: "MWF"
-            }, {
-                name: "Jackie McKinney",
-                daysPresent: "MWF"
-            }, {
-                name: "Daniel McKinney",
-                daysPresent: "TTH"
-            }, {
-                name: "Eva McKinney",
-                daysPresent: "TTH"
-            }, {
-                name: "Clark McKinney",
-                daysPresent: "TTH"
-            }
-        ],
         people = peopleStr.trim().split('\n').map(function (row) {
             var parts = row.split(',');
             return {
@@ -73,7 +44,7 @@ function rollMaker(peopleStr, dateStartStr, dateEndStr) {
                 'tth': 2
             },
             placement = map[person.daysPresent.toLowerCase()];
-
+        console.log(placement);
         //if not on list
         if (typeof placement === 'undefined') {
             placement = 3;
@@ -154,4 +125,11 @@ function rollMaker(peopleStr, dateStartStr, dateEndStr) {
 
     document.querySelector('#rollmakerOutput').innerHTML = htmlOut;
 }
-rollMaker(document.querySelector('textarea').innerHTML, document.querySelector('#dateStart').value, document.querySelector('#dateEnd').value);
+
+document.querySelector('button').addEventListener('click', function () {
+    'use strict';
+    var studentsStr = document.querySelector('textarea').value,
+        dateStartStr = document.querySelector('#dateStart').value,
+        dateEndStr = document.querySelector('#dateEnd').value;
+    rollMaker(studentsStr, dateStartStr, dateEndStr);
+});

@@ -19,6 +19,19 @@ textarea{
     max-width: 500px;
     height: 300px;
 }
+
+/*square up the boxes*/
+td{
+    min-width: 18px;
+    height:18px;
+}
+
+/*center the headings */
+tr:nth-child(1) td, tr:nth-child(2) td{
+text-align: center;
+}
+
+
 /*names*/
 
 td:first-child {
