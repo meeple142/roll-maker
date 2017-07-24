@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Roll Maker</title>
+    <link href="style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+    <h1>Roll Maker</h1>
+
+    <h2>Instructions</h2>
+    <p>these are instructions</p>
+    <h3>People</h3>
+    <textarea></textarea>
+    <h3>Date Range</h3>
+    <label>Start Date:
+        <input type="text" id="dateStart">
+    </label>
+    <label>End Date:
+        <input type="text" id="dateEnd">
+    </label>
+    <button>Make Rolls</button>
+    <div id="rollmakerOutput">
+    </div>
+
+    <!--  template for now  -->
+    <script id="template" type="text/x-handlebars-template">
+        <h1>{{monthName weeks}}</h1>
+        <table>
+            <!--  days of week -->
+            <tr>
+                <td></td>
+                {{#each weeks as |week|}} 
+                    {{#each week as |day|}} 
+                        {{#if @first}}<td class="weekendBorder">{{else}}<td>{{/if}} 
+                            {{dayLetter day}}
+                        </td>
+                    {{/each}}
+                {{/each}}
+            </tr>
+            <!--  day of month -->
+            <tr>
+                <td></td>
+                {{#each weeks as |week|}}
+                    {{#each week as |day|}}
+                        {{#if @first}}<td class="weekendBorder">{{else}}<td>{{/if}}
+                        {{dayNumber day}}</td>
+                    {{/each}}
+                {{/each}}
+            </tr>
+            <!--  a row for each person -->
+            {{#each peopleGroups as |group|}}
+                {{#each group as |person|}}
+                    {{#if @first}}<tr class='peopleGroup'>{{else}}<tr>{{/if}}
+                        <td>{{name}} {{daysPresent}}</td>
+                            {{#each ../../weeks as |week|}}
+                                {{#each week as |day|}}
+                                    {{#if @first}}<td class="weekendBorder">{{else}}<td>{{/if}}
+                                    </td>                                      
+                                {{/each}} 
+                            {{/each}}
+                            
+                        </tr>
+                {{/each}}
+            {{/each}}
+
+        </table>
+
+    </script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.10/handlebars.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="rollMaker.js"></script>
+</body>
+
+</html>

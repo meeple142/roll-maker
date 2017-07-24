@@ -1,0 +1,12 @@
+numbers and leters in boxes
+numbers below leters
+heavy vert lines between weeks
+heavy hroi lines below numbers above boxes
+end and start months in middle of weeks
+heavy lines between types of students
+
+top left box no border
+
+at least 16 names
+
+cute stuff on top left and right

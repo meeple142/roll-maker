@@ -1,0 +1,50 @@
+button {
+    display: block;
+}
+
+label {
+    display: block;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+table,
+td {
+    border: 1px solid black;
+}
+
+/*names*/
+
+td:first-child {
+    text-align: center;
+}
+
+/*heavy border below dates */
+
+tr:nth-child(3) td {
+    border-top-width: 3px;
+}
+
+/*heavy vert border for weekends*/
+
+.weekendBorder {
+    border-left-width: 3px;
+}
+/*heavy horiz border for peopleGroups*/
+
+.peopleGroup td {
+    border-top-width: 3px;
+}
+
+/*remove top left borders for topleft cells*/
+tr:nth-child(1) td:first-child,
+tr:nth-child(2) td:first-child
+{
+    border-color: transparent;
+}
+
+
+
+
