@@ -1,3 +1,6 @@
+body{
+font-family: sans-serif;
+}
 button {
     display: block;
 }
@@ -8,6 +11,9 @@ label {
 
 table {
     border-collapse: collapse;
+    margin: 10px auto;
+    height: 7in;
+    width:10.5in;
 }
 
 table,
@@ -38,9 +44,9 @@ tr:nth-child(2) td {
 }
 
 
-/*names*/
+/* center the days they are there*/
 
-td:first-child {
+td:nth-child(2) {
     text-align: center;
 }
 
@@ -68,11 +74,21 @@ tr:nth-child(3) td {
 
 /*remove top left borders for topleft cells*/
 
-tr:nth-child(1) td:first-child,
-tr:nth-child(2) td:first-child {
+tr:nth-child(1) td:nth-child(1),
+tr:nth-child(1) td:nth-child(2),
+tr:nth-child(2) td:nth-child(1),
+tr:nth-child(2) td:nth-child(2) {
     border-color: transparent;
 }
 
+/*line up the names and fix the borders*/
+tr td:nth-child(1){
+padding-right: 10px;
+border-right-color: transparent;
+}
+tr td:nth-child(2){
+border-left-color: transparent;
+}
 
 /*graying out of days for kid that can be there*/
 
@@ -82,4 +98,21 @@ tr:nth-child(2) td:first-child {
 .TTH td.Tue,
 .TTH td.Thu {
     background-color: lightgray;
+}
+/*fix the headings*/
+#rollmakerOutput h1,
+#rollmakerOutput h2{
+    text-align: center;
+    margin: 0;
+}
+
+#rollmakerOutput h2{
+ font-size: 15px;
+}
+
+/*make it print right*/
+@media print{
+    #rollmakerOutput h2{
+        page-break-before:always;
+    }   
 }

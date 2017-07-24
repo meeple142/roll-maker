@@ -46,10 +46,12 @@ Harold B. Lee, M-F</textarea>
 
     <!--  template for now  -->
     <script id="template" type="text/x-handlebars-template">
+        <h2>Young Toddlers' Class Roll</h2>
         <h1>{{monthName weeks}}</h1>
         <table>
             <!--  days of week -->
             <tr>
+                <td></td>
                 <td></td>
                 {{#each weeks as |week|}} 
                     {{#each week as |day|}} 
@@ -62,6 +64,7 @@ Harold B. Lee, M-F</textarea>
             <!--  day of month -->
             <tr>
                 <td></td>
+                <td></td>
                 {{#each weeks as |week|}}
                     {{#each week as |day|}}
                         {{#if @first}}<td class="weekendBorder">{{else}}<td>{{/if}}
@@ -73,7 +76,8 @@ Harold B. Lee, M-F</textarea>
             {{#each peopleGroups as |group|}}
                 {{#each people}}
                     <tr class='{{group.name}} {{#if @first}}peopleGroup{{/if}}'>
-                        <td>{{name}} {{daysPresent}}</td>
+                        <td>{{name}}</td>
+                        <td>{{daysPresent}}</td>
                             {{#each ../../weeks as |week|}}
                                 {{#each week as |day|}}
                                     <td class="{{#if ../../../../wantHightlighting}}{{DayOfWeek}}{{/if}} {{#if @first}}weekendBorder{{/if}}"></td>                                      
