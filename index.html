@@ -66,13 +66,12 @@ Harold B. Lee, M-F</textarea>
             </tr>
             <!--  a row for each person -->
             {{#each peopleGroups as |group|}}
-                {{#each group as |person|}}
-                    {{#if @first}}<tr class='peopleGroup'>{{else}}<tr>{{/if}}
+                {{#each people}}
+                    <tr class='{{group.name}} {{#if @first}}peopleGroup{{/if}}'>
                         <td>{{name}} {{daysPresent}}</td>
                             {{#each ../../weeks as |week|}}
                                 {{#each week as |day|}}
-                                    {{#if @first}}<td class="weekendBorder">{{else}}<td>{{/if}}
-                                    </td>                                      
+                                    <td class="{{DayOfWeek}}{{#if @first}} weekendBorder{{/if}}"></td>                                      
                                 {{/each}} 
                             {{/each}}
                             

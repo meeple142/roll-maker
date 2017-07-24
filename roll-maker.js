@@ -38,24 +38,45 @@ function rollMaker(peopleStr, dateStartStr, dateEndStr) {
 
     //split up the people based on what days the attend
     peopleGroups = people.reduce(function (peopleOut, person) {
+        if (peopleOut === null) {
+            peopleOut = [
+                {
+                    name: 'm-f',
+                    people: []
+                },
+                {
+                    name: 'mwf',
+                    people: []
+                },
+                {
+                    name: 'tth',
+                    people: []
+                },
+                {
+                    name: 'other',
+                    people: []
+                }
+            ];
+        }
+
         var map = {
                 'm-f': 0,
                 'mwf': 1,
                 'tth': 2
             },
             placement = map[person.daysPresent.toLowerCase()];
-        console.log(placement);
+
         //if not on list
         if (typeof placement === 'undefined') {
             placement = 3;
         }
 
-        peopleOut[placement].push(person);
+        peopleOut[placement].people.push(person);
 
         return peopleOut;
-    }, [[], [], [], []]).map(function (peopleGroup) {
-        //sort each array
-        return peopleGroup.sort(function (a, b) {
+    }, null).map(function (peopleGroup) {
+        //sort each people array
+        peopleGroup.people.sort(function (a, b) {
             if (a.name < b.name) {
                 return -1;
             } else if (a.name > b.name) {
@@ -64,6 +85,7 @@ function rollMaker(peopleStr, dateStartStr, dateEndStr) {
                 return 0;
             }
         });
+        return peopleGroup;
     });
 
 
@@ -97,6 +119,7 @@ function rollMaker(peopleStr, dateStartStr, dateEndStr) {
         //check current day is a weekday
         //filter out 0=Sundays and 6=Saturdays 
         if (tempdate.day() > 0 && tempdate.day() < 6) {
+            tempdate.DayOfWeek = tempdate.format('ddd');
             //allways add new day to the last week array in the month array in the months list
             currentWeek.push(tempdate);
         }
