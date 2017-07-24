@@ -14,7 +14,7 @@ function rollMaker(peopleStr, dateStartStr, dateEndStr, wantHightlighting) {
             var parts = row.split(',');
             return {
                 name: parts[0].trim(),
-                daysPresent: parts[1].trim()
+                daysPresent: parts[1].trim().toUpperCase()
             };
         });
 
@@ -41,15 +41,15 @@ function rollMaker(peopleStr, dateStartStr, dateEndStr, wantHightlighting) {
         if (peopleOut === null) {
             peopleOut = [
                 {
-                    name: 'm-f',
+                    name: 'M-F',
                     people: []
                 },
                 {
-                    name: 'mwf',
+                    name: 'MWF',
                     people: []
                 },
                 {
-                    name: 'tth',
+                    name: 'TTH',
                     people: []
                 },
                 {
@@ -60,11 +60,12 @@ function rollMaker(peopleStr, dateStartStr, dateEndStr, wantHightlighting) {
         }
 
         var map = {
-                'm-f': 0,
-                'mwf': 1,
-                'tth': 2
+                'M-F': 0,
+                'MWF': 1,
+                'TTH': 2
             },
-            placement = map[person.daysPresent.toLowerCase()];
+            placement = map[person.daysPresent];
+        //to uppercased when parseing the person string
 
         //if not on list
         if (typeof placement === 'undefined') {
