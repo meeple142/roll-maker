@@ -1,16 +1,18 @@
 /*jslint browser:true */
 /*global moment, Handlebars, console*/
 
-function rollMaker() {
+function rollMaker(peopleStr, dateStartStr, dateEndStr) {
     'use strict';
     var i, tempdate, htmlOut, currentMonth, currentWeek, peopleGroups,
-        dateStart = moment([2017, 8, 1]),
+        dateStart = moment(dateStartStr, 'M-D-YY'),
+        //dateStart = moment([2017, 8, 1]),
         dateCounter = moment(dateStart),
-        dateEnd = moment([2018, 4, 31]),
+        dateEnd = moment(dateEndStr, 'M-D-YY'),
+        //dateEnd = moment([2018, 4, 31]),
         months = [],
         dayCount = dateEnd.diff(dateStart, 'days'),
         template = Handlebars.compile(document.querySelector('#template').innerHTML),
-        people = [
+        peopleOld = [
             {
                 name: "John Taylor",
                 daysPresent: "M-F"
@@ -36,8 +38,17 @@ function rollMaker() {
                 name: "Clark McKinney",
                 daysPresent: "TTH"
             }
-        ];
+        ],
+        people = peopleStr.trim().split('\n').map(function (row) {
+            var parts = row.split(',');
+            return {
+                name: parts[0].trim(),
+                daysPresent: parts[1].trim()
+            };
+        });
 
+    console.log(dateStart);
+    console.log(dateEnd);
 
     //fix up handlebars
     Handlebars.registerHelper('dayLetter', function (day) {
@@ -143,4 +154,4 @@ function rollMaker() {
 
     document.querySelector('#rollmakerOutput').innerHTML = htmlOut;
 }
-rollMaker();
+rollMaker(document.querySelector('textarea').innerHTML, document.querySelector('#dateStart').value, document.querySelector('#dateEnd').value);
