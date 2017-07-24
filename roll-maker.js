@@ -31,7 +31,7 @@ function rollMaker(peopleStr, dateStartStr, dateEndStr) {
         return day.date();
     });
     Handlebars.registerHelper('monthName', function (days) {
-        return days[0][0].format('MMMM');
+        return days[0][0].format('MMMM YYYY');
     });
 
     //fix up the people array
