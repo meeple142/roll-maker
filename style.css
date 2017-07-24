@@ -76,10 +76,10 @@ tr:nth-child(2) td:first-child {
 
 /*graying out of days for kid that can be there*/
 
-.mwf td.Mon,
-.mwf td.Wed,
-.mwf td.Fri,
-.tth td.Tue,
-.tth td.Thu {
+.MWF td.Mon,
+.MWF td.Wed,
+.MWF td.Fri,
+.TTH td.Tue,
+.TTH td.Thu {
     background-color: lightgray;
 }
