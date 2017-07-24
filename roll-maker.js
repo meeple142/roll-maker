@@ -1,7 +1,7 @@
 /*jslint browser:true*/
 /*global moment, Handlebars, console*/
 
-function rollMaker(peopleStr, dateStartStr, dateEndStr) {
+function rollMaker(peopleStr, dateStartStr, dateEndStr, wantHightlighting) {
     'use strict';
     var i, tempdate, htmlOut, currentMonth, currentWeek, peopleGroups,
         dateStart = moment(dateStartStr, 'M-D-YY'),
@@ -137,7 +137,8 @@ function rollMaker(peopleStr, dateStartStr, dateEndStr) {
     htmlOut = months.map(function (month) {
         return template({
             peopleGroups: peopleGroups,
-            weeks: month
+            weeks: month,
+            wantHightlighting: wantHightlighting
         });
     }).join('\n').replace(/\s+/g, ' ');
     //concat all the strings
@@ -153,6 +154,7 @@ document.querySelector('button').addEventListener('click', function () {
     'use strict';
     var studentsStr = document.querySelector('textarea').value,
         dateStartStr = document.querySelector('#dateStart').value,
-        dateEndStr = document.querySelector('#dateEnd').value;
-    rollMaker(studentsStr, dateStartStr, dateEndStr);
+        dateEndStr = document.querySelector('#dateEnd').value,
+        wantHightlighting = document.querySelector('#wantHightlighting').checked;
+    rollMaker(studentsStr, dateStartStr, dateEndStr, wantHightlighting);
 });

@@ -28,9 +28,14 @@ Harold B. Lee, M-F</textarea>
     <p>Must have both dates and need to be in the format "M-D-YY".</p>
     <label>Start Date:
         <input type="text" id="dateStart" value="9-1-17">
-    </label>
     <label>End Date:
         <input type="text" id="dateEnd" value="5-31-18">
+    </label>
+    </label>
+    <h3>Can't Be Here Highlighting</h3>
+    <p>With the box checked, boxes where students can't be here will be darkened.</p>
+    <label>I want Highlighting:
+        <input type="checkbox" id="wantHightlighting" checked>
     </label>
     <h3>Go!</h3>
     <p>After you click the "Make Rolls" button, you will need to use the snipping tool to get the roll tables to publisher.</p>
@@ -71,7 +76,7 @@ Harold B. Lee, M-F</textarea>
                         <td>{{name}} {{daysPresent}}</td>
                             {{#each ../../weeks as |week|}}
                                 {{#each week as |day|}}
-                                    <td class="{{DayOfWeek}}{{#if @first}} weekendBorder{{/if}}"></td>                                      
+                                    <td class="{{#if ../../../../wantHightlighting}}{{DayOfWeek}}{{/if}} {{#if @first}}weekendBorder{{/if}}"></td>                                      
                                 {{/each}} 
                             {{/each}}
                             
