@@ -28,7 +28,7 @@ Handlebars.registerHelper('td', function (dataIn) {
     stringOut += this.DayOfWeek
     
     if (isDayOffTopRow) {
-        stringOut += ' dayOffTop';
+        stringOut += ' dayOff';
     }
     
     if (isFirstDayInWeek) {
@@ -38,7 +38,7 @@ Handlebars.registerHelper('td', function (dataIn) {
     stringOut += '"';
     
     if (isDayOffTopRow) {
-        stringOut += 'rowspan="' + rowCount + '" >' + this.dayOffTitle;
+        stringOut += 'rowspan="' + rowCount + '" ><div>' + this.dayOffTitle + '</div>';
     } else {
     stringOut += ' >';
     }
