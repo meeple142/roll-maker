@@ -7,6 +7,7 @@
 </head>
 
 <body>
+    <div id="settings">
     <h1>Roll Maker</h1>
     <h3>People</h3>
     <p>Put one student on each line. You do not need to sort by name or days they attend, the program will do that.</p>
@@ -35,7 +36,7 @@ New Years Day,1-1-18
     <h3>Date Range</h3>
     <p>Must have both dates and need to be in the format "M-D-YY".</p>
     <label>Start Date:
-        <input type="text" id="dateStart" value="9-1-17">
+        <input type="text" id="dateStart" value="8-27-17">
     <label>End Date:
         <input type="text" id="dateEnd" value="5-31-18">
     </label>
@@ -49,6 +50,7 @@ New Years Day,1-1-18
     <p>After you click the "Make Rolls" button, you will need to use the snipping tool to get the roll tables to publisher.</p>
     <p>If the picture looks fuzzy in publisher, 'zoom in' in the browser before you use the snipping tool.</p>
     <button>Make Rolls</button>
+    </div>
     <div id="rollmakerOutput">
     </div>
 
@@ -56,7 +58,7 @@ New Years Day,1-1-18
     <script id="template" type="text/x-handlebars-template">
         <h2>Young Toddlers' Class Roll</h2>
         <h1>{{monthName weeks}}</h1>
-        <table>
+        <table{{#if wantHightlighting}} class="wantHighlighing"{{/if}}>
             <!--  days of week -->
             <tr>
                 <td></td>

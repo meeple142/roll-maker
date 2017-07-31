@@ -98,11 +98,11 @@ tr td:nth-child(2) {
 
 /*graying out of days for kid that can be there*/
 
-.MWF td.Mon,
-.MWF td.Wed,
-.MWF td.Fri,
-.TTH td.Tue,
-.TTH td.Thu {
+.wantHighlighing .MWF td.Mon,
+.wantHighlighing .MWF td.Wed,
+.wantHighlighing .MWF td.Fri,
+.wantHighlighing .TTH td.Tue,
+.wantHighlighing .TTH td.Thu {
     background-color: lightgray;
 }
 
@@ -123,6 +123,9 @@ tr td:nth-child(2) {
 /*make it print right*/
 
 @media print {
+    #settings {
+        display: none;
+    }
     #rollmakerOutput h2 {
         page-break-before: always;
     }
@@ -134,7 +137,7 @@ tr td:nth-child(2) {
 .dayOff {
     max-width: 18px;
     white-space: nowrap;
-    vertical-align:top;
+    vertical-align: top;
     background-color: dimgray;
 }
 
