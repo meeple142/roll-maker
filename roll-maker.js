@@ -1,9 +1,65 @@
-/*jslint browser:true*/
+/*jslint browser:true, nomen: true*/
 /*global moment, Handlebars, console*/
 
-function rollMaker(peopleStr, dateStartStr, dateEndStr, wantHightlighting) {
+Handlebars.registerHelper('td', function (dataIn) {
     'use strict';
-    var i, tempdate, htmlOut, currentMonth, currentWeek, peopleGroups,
+
+    var stringOut = '',
+        isFirstGroup = dataIn.data._parent._parent._parent.first,
+        isFirstPerson = dataIn.data._parent._parent.first,
+        isDayOffTopRow = this.isDayOff && isFirstGroup && isFirstPerson,
+        isDayOffSkip = this.isDayOff && !(isFirstGroup && isFirstPerson),
+        isFirstDayInWeek = dataIn.data.first,
+        rowCount = dataIn.data.root.peopleGroups.reduce(function(sum, peopleGroup){
+            sum += peopleGroup.people.length;
+            return sum;
+        },0);
+
+    // send back comment if we are skipping today
+    if(isDayOffSkip){
+        return new Handlebars.SafeString('<!-- skip day off -->');
+    }
+    
+    
+    //the others we can juts add to
+    stringOut += '<td class="';
+    
+    //add the day
+    stringOut += this.DayOfWeek
+    
+    if (isDayOffTopRow) {
+        stringOut += ' dayOffTop';
+    }
+    
+    if (isFirstDayInWeek) {
+        stringOut += ' weekendBorder';
+    }
+        
+    stringOut += '"';
+    
+    if (isDayOffTopRow) {
+        stringOut += 'rowspan="' + rowCount + '" >' + this.dayOffTitle;
+    } else {
+    stringOut += ' >';
+    }
+    stringOut += '</td>';
+    
+    
+    if (this.isSame(moment('12-25-17', "MM-DD-YY"))) {
+        console.log('thie string', stringOut);
+        console.log('dataIn', dataIn.data);
+        console.log(isFirstGroup);
+        console.log(isFirstPerson);
+        console.log(isFirstDayInWeek);
+    }
+
+    return new Handlebars.SafeString(stringOut);
+    
+});
+
+function rollMaker(peopleStr, daysOffStr, dateStartStr, dateEndStr, wantHightlighting) {
+    'use strict';
+    var i, j, tempdate, htmlOut, currentMonth, currentWeek, peopleGroups,
         dateStart = moment(dateStartStr, 'M-D-YY'),
         dateCounter = moment(dateStart),
         dateEnd = moment(dateEndStr, 'M-D-YY'),
@@ -15,6 +71,13 @@ function rollMaker(peopleStr, dateStartStr, dateEndStr, wantHightlighting) {
             return {
                 name: parts[0].trim(),
                 daysPresent: parts[1].trim().toUpperCase()
+            };
+        }),
+        daysOff = daysOffStr.trim().split('\n').map(function (row) {
+            var parts = row.split(',');
+            return {
+                name: parts[0].trim(),
+                date: moment(parts[1].trim(), 'M-D-YY')
             };
         });
 
@@ -120,7 +183,17 @@ function rollMaker(peopleStr, dateStartStr, dateEndStr, wantHightlighting) {
         //check current day is a weekday
         //filter out 0=Sundays and 6=Saturdays 
         if (tempdate.day() > 0 && tempdate.day() < 6) {
+            //record the dey of week
             tempdate.DayOfWeek = tempdate.format('ddd');
+            //is it a day off?
+            for (j = 0; j < daysOff.length; j += 1) {
+                if (daysOff[j].date.isSame(tempdate)) {
+                    tempdate.isDayOff = true;
+                    tempdate.dayOffTitle = daysOff[j].name;
+                    j = daysOff.length;
+                }
+            }
+
             //allways add new day to the last week array in the month array in the months list
             currentWeek.push(tempdate);
         }
@@ -153,9 +226,10 @@ function rollMaker(peopleStr, dateStartStr, dateEndStr, wantHightlighting) {
 
 document.querySelector('button').addEventListener('click', function () {
     'use strict';
-    var studentsStr = document.querySelector('textarea').value,
+    var studentsStr = document.querySelector('#names').value,
+        daysOffStr = document.querySelector('#daysOff').value,
         dateStartStr = document.querySelector('#dateStart').value,
         dateEndStr = document.querySelector('#dateEnd').value,
         wantHightlighting = document.querySelector('#wantHightlighting').checked;
-    rollMaker(studentsStr, dateStartStr, dateEndStr, wantHightlighting);
+    rollMaker(studentsStr, daysOffStr, dateStartStr, dateEndStr, wantHightlighting);
 });

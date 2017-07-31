@@ -11,7 +11,7 @@
     <h3>People</h3>
     <p>Put one student on each line. You do not need to sort by name or days they attend, the program will do that.</p>
     <p>Type their name and then a comma and then either "m-f", "mwf", "tth" (can use upper or lower case).</p>
-    <textarea>John Taylor,M-F
+    <textarea id="names">John Taylor,M-F
 Joseph Smith, M-F
 Emma Smith, M-F
 Brigham Young, M-F
@@ -24,6 +24,14 @@ George Albert Smith, M-F
 David O. McKay, MWF
 Joseph Fielding Smith, TTH
 Harold B. Lee, M-F</textarea>
+    
+    <h3>Days Off</h3>
+    <p>Put one day on each line. You do not need to sort at all, the program will do that.</p>
+    <p>Type the name of the event then type a comma and then the date in this format  "M-D-YY"</p>
+    <textarea id="daysOff">Christmas, 12-25-17
+New Years Day,1-1-18
+    </textarea>
+    
     <h3>Date Range</h3>
     <p>Must have both dates and need to be in the format "M-D-YY".</p>
     <label>Start Date:
@@ -44,7 +52,7 @@ Harold B. Lee, M-F</textarea>
     <div id="rollmakerOutput">
     </div>
 
-    <!--  template for now  -->
+    <!--  template  -->
     <script id="template" type="text/x-handlebars-template">
         <h2>Young Toddlers' Class Roll</h2>
         <h1>{{monthName weeks}}</h1>
@@ -80,7 +88,7 @@ Harold B. Lee, M-F</textarea>
                         <td>{{daysPresent}}</td>
                             {{#each ../../weeks as |week|}}
                                 {{#each week as |day|}}
-                                    <td class="{{#if ../../../../wantHightlighting}}{{DayOfWeek}}{{/if}} {{#if @first}}weekendBorder{{/if}}"></td>                                      
+                                    {{td}}
                                 {{/each}} 
                             {{/each}}
                             
