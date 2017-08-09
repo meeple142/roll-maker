@@ -1,5 +1,24 @@
 /*jslint browser:true, nomen: true*/
+/*eslint-env browser */
+/*eslint no-console:0 */
 /*global moment, Handlebars, console*/
+
+var settingDefaults = [{
+    "id": "names",
+    "value": "John Taylor, M-F\nJoseph Smith, M-F\nEmma Smith, M-F\nBrigham Young, M-F\nJohn Taylor, MWF\nWilford Woodruff, TTH\nLorenzo Snow, M-F\nJoseph F. Smith, MWF\nHeber J Grant, TTH\nGeorge Albert Smith, M-F\nDavid O. McKay, MWF\nJoseph Fielding Smith, TTH\nHarold B. Lee, M-F"
+}, {
+    "id": "daysOff",
+    "value": "Christmas, 12-25-17\nNew Years Day, 1-1-18"
+}, {
+    "id": "dateStart",
+    "value": "8-27-17"
+}, {
+    "id": "dateEnd",
+    "value": "5-31-18"
+}, {
+    "id": "wantHightlighting",
+    "checked": true
+}];
 
 Handlebars.registerHelper('td', function (dataIn) {
     'use strict';
@@ -10,41 +29,41 @@ Handlebars.registerHelper('td', function (dataIn) {
         isDayOffTopRow = this.isDayOff && isFirstGroup && isFirstPerson,
         isDayOffSkip = this.isDayOff && !(isFirstGroup && isFirstPerson),
         isFirstDayInWeek = dataIn.data.first,
-        rowCount = dataIn.data.root.peopleGroups.reduce(function(sum, peopleGroup){
+        rowCount = dataIn.data.root.peopleGroups.reduce(function (sum, peopleGroup) {
             sum += peopleGroup.people.length;
             return sum;
-        },0);
+        }, 0);
 
     // send back comment if we are skipping today
-    if(isDayOffSkip){
+    if (isDayOffSkip) {
         return new Handlebars.SafeString('<!-- skip day off -->');
     }
-    
-    
+
+
     //the others we can juts add to
     stringOut += '<td class="';
-    
+
     //add the day
     stringOut += this.DayOfWeek
-    
+
     if (isDayOffTopRow) {
         stringOut += ' dayOff';
     }
-    
+
     if (isFirstDayInWeek) {
         stringOut += ' weekendBorder';
     }
-        
+
     stringOut += '"';
-    
+
     if (isDayOffTopRow) {
         stringOut += 'rowspan="' + rowCount + '" ><div>' + this.dayOffTitle + '</div>';
     } else {
-    stringOut += ' >';
+        stringOut += ' >';
     }
     stringOut += '</td>';
-    
-    
+
+
     if (this.isSame(moment('12-25-17', "MM-DD-YY"))) {
         console.log('thie string', stringOut);
         console.log('dataIn', dataIn.data);
@@ -54,7 +73,7 @@ Handlebars.registerHelper('td', function (dataIn) {
     }
 
     return new Handlebars.SafeString(stringOut);
-    
+
 });
 
 function rollMaker(peopleStr, daysOffStr, dateStartStr, dateEndStr, wantHightlighting) {
@@ -224,7 +243,8 @@ function rollMaker(peopleStr, daysOffStr, dateStartStr, dateEndStr, wantHightlig
     document.querySelector('#rollmakerOutput').innerHTML = htmlOut;
 }
 
-document.querySelector('button').addEventListener('click', function () {
+//make the button do stuff on click
+document.querySelector('#makeRolls').addEventListener('click', function () {
     'use strict';
     var studentsStr = document.querySelector('#names').value,
         daysOffStr = document.querySelector('#daysOff').value,
@@ -233,3 +253,76 @@ document.querySelector('button').addEventListener('click', function () {
         wantHightlighting = document.querySelector('#wantHightlighting').checked;
     rollMaker(studentsStr, daysOffStr, dateStartStr, dateEndStr, wantHightlighting);
 });
+
+
+
+//make the feilds remember what was typed in
+var inputs = settingDefaults.map(function (setting) {
+        return document.getElementById(setting.id);
+    }),
+    localStorageVar = 'JAM.textInputs';
+
+function getKeysFilterId(objIn) {
+    return Object.keys(objIn).filter(function (key) {
+        return key !== "id"
+    });
+}
+
+function saveSettings() {
+    var settingsOut = settingDefaults.map(function (setting) {
+        var objOut = {
+            id: setting.id
+        };
+
+        var keysNotIds = getKeysFilterId(setting),
+            ele = document.getElementById(setting.id);
+
+        keysNotIds.forEach(function (key) {
+            objOut[key] = ele[key];
+        });
+
+        return objOut;
+    });
+
+    console.log("settings", JSON.stringify(settingsOut));
+    window.localStorage.setItem(localStorageVar, JSON.stringify(settingsOut));
+}
+
+//add the event listeners to the text inputs
+inputs.forEach(function (ele) {
+    ele.addEventListener('input', saveSettings);
+    ele.addEventListener('change', saveSettings);
+});
+
+
+function loadTextAreas() {
+    var inputDatas = JSON.parse(window.localStorage.getItem(localStorageVar));
+    console.log('load', inputs);
+    inputDatas.forEach(function (inputData) {
+        var keysNotIds = getKeysFilterId(inputData),
+            ele = document.getElementById(inputData.id);
+
+        console.log(inputData)
+
+        //set all the values 
+        keysNotIds.forEach(function (key) {
+            ele[key] = inputData[key];
+        });
+    })
+}
+
+//add the eventlistener for the button
+loadTextAreas();
+
+//event listener to the reset inputs button
+function resetInputs() {
+    //set the local storage to the defaults 
+    window.localStorage.setItem(localStorageVar, JSON.stringify(settingDefaults));
+    console.log("here:", window.localStorage.getItem(localStorageVar))
+
+    //then reload them
+    loadTextAreas();
+}
+
+//add the eventListener for resetInputs button
+document.querySelector('#resetInputs').addEventListener('click', resetInputs);

@@ -8,48 +8,39 @@
 
 <body>
     <div id="settings">
-    <h1>Roll Maker</h1>
-    <h3>People</h3>
-    <p>Put one student on each line. You do not need to sort by name or days they attend, the program will do that.</p>
-    <p>Type their name and then a comma and then either "m-f", "mwf", "tth" (can use upper or lower case).</p>
-    <textarea id="names">John Taylor,M-F
-Joseph Smith, M-F
-Emma Smith, M-F
-Brigham Young, M-F
-John Taylor, MWF
-Wilford Woodruff, TTH
-Lorenzo Snow, M-F
-Joseph F. Smith, MWF
-Heber J Grant, TTH
-George Albert Smith, M-F
-David O. McKay, MWF
-Joseph Fielding Smith, TTH
-Harold B. Lee, M-F</textarea>
-    
-    <h3>Days Off</h3>
-    <p>Put one day on each line. You do not need to sort at all, the program will do that.</p>
-    <p>Type the name of the event then type a comma and then the date in this format  "M-D-YY"</p>
-    <textarea id="daysOff">Christmas, 12-25-17
-New Years Day,1-1-18
-    </textarea>
-    
-    <h3>Date Range</h3>
-    <p>Must have both dates and need to be in the format "M-D-YY".</p>
-    <label>Start Date:
-        <input type="text" id="dateStart" value="8-27-17">
-    <label>End Date:
-        <input type="text" id="dateEnd" value="5-31-18">
+        <h1>Roll Maker</h1>
+        <h3>Reset Inputs</h3>
+        <p>If you want to reset the inputs to the defauts, click the button below.</p>
+        <button id="resetInputs">Reset Inputs</button>
+
+        <h3>People</h3>
+        <p>Put one student on each line. You do not need to sort by name or days they attend, the program will do that.</p>
+        <p>Type their name and then a comma and then either "m-f", "mwf", "tth" (can use upper or lower case).</p>
+        <textarea id="names"></textarea>
+
+        <h3>Days Off</h3>
+        <p>Put one day on each line. You do not need to sort at all, the program will do that.</p>
+        <p>Type the name of the event then type a comma and then the date in this format "M-D-YY"</p>
+        <textarea id="daysOff"></textarea>
+
+        <h3>Date Range</h3>
+        <p>Must have both dates and need to be in the format "M-D-YY".</p>
+        <label>Start Date:
+            <input type="text" id="dateStart">
+        </label>
+        <label>End Date:
+            <input type="text" id="dateEnd">
+        </label>
+
+        <h3>Can't Be Here Highlighting</h3>
+        <p>With the box checked, boxes where students can't be here will be darkened.</p>
+        <label>I want Highlighting:
+        <input type="checkbox" id="wantHightlighting">
     </label>
-    </label>
-    <h3>Can't Be Here Highlighting</h3>
-    <p>With the box checked, boxes where students can't be here will be darkened.</p>
-    <label>I want Highlighting:
-        <input type="checkbox" id="wantHightlighting" checked>
-    </label>
-    <h3>Go!</h3>
-    <p>After you click the "Make Rolls" button, you will need to use the snipping tool to get the roll tables to publisher.</p>
-    <p>If the picture looks fuzzy in publisher, 'zoom in' in the browser before you use the snipping tool.</p>
-    <button>Make Rolls</button>
+        <h3>Go!</h3>
+        <p>Click the "Make Rolls" button to make the rolls.</p>
+        <p>To print the rolls, you can push ctrl-p or use the three dot menu at the top right then click menu.</p>
+        <button id="makeRolls">Make Rolls</button>
     </div>
     <div id="rollmakerOutput">
     </div>
@@ -58,16 +49,15 @@ New Years Day,1-1-18
     <script id="template" type="text/x-handlebars-template">
         <h2>Young Toddlers' Class Roll</h2>
         <h1>{{monthName weeks}}</h1>
-        <table{{#if wantHightlighting}} class="wantHighlighing"{{/if}}>
+        <table{{#if wantHightlighting}} class="wantHighlighing" {{/if}}>
             <!--  days of week -->
             <tr>
                 <td></td>
                 <td></td>
-                {{#each weeks as |week|}} 
-                    {{#each week as |day|}} 
-                        {{#if @first}}<td class="weekendBorder">{{else}}<td>{{/if}} 
-                            {{dayLetter day}}
-                        </td>
+                {{#each weeks as |week|}}
+                    {{#each week as |day|}}
+                        {{#if @first}}<td class="weekendBorder">{{else}}<td>{{/if}}
+                        {{dayNumber day}}</td>
                     {{/each}}
                 {{/each}}
             </tr>
@@ -91,9 +81,9 @@ New Years Day,1-1-18
                             {{#each ../../weeks as |week|}}
                                 {{#each week as |day|}}
                                     {{td}}
-                                {{/each}} 
+                                {{/each}}
                             {{/each}}
-                            
+
                         </tr>
                 {{/each}}
             {{/each}}
