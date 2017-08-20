@@ -22,6 +22,10 @@
         <p>Put one day on each line. You do not need to sort at all, the program will do that.</p>
         <p>Type the name of the event then type a comma and then the date in this format "M-D-YY"</p>
         <textarea id="daysOff"></textarea>
+        
+        <h3>Comment Days</h3>
+        <p>These days will show with a title above it. Put one day on each line. You do not need to sort at all, the program will do that.</p>
+        <textarea id="commentDays"></textarea>
 
         <h3>Date Range</h3>
         <p>Must have both dates and need to be in the format "M-D-YY".</p>
@@ -50,6 +54,17 @@
         <h2>Young Toddlers' Class Roll</h2>
         <h1>{{monthName weeks}}</h1>
         <table{{#if wantHightlighting}} class="wantHighlighing" {{/if}}>
+            <!--  comment day -->
+            <tr>
+                <td></td>
+                <td></td>
+                {{#each weeks as |week|}}
+                    {{#each week as |day|}}
+                        {{#if @first}}<td class="weekendBorder">{{else}}<td>{{/if}}
+                        {{comment}}</td>
+                    {{/each}}
+                {{/each}}
+            </tr>
             <!--  days of week -->
             <tr>
                 <td></td>
@@ -57,7 +72,7 @@
                 {{#each weeks as |week|}}
                     {{#each week as |day|}}
                         {{#if @first}}<td class="weekendBorder">{{else}}<td>{{/if}}
-                        {{dayNumber day}}</td>
+                        {{dayLetter day}}</td>
                     {{/each}}
                 {{/each}}
             </tr>

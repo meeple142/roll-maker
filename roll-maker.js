@@ -10,6 +10,9 @@ var settingDefaults = [{
     "id": "daysOff",
     "value": "Christmas, 12-25-17\nNew Years Day, 1-1-18"
 }, {
+    "id": "commentDays",
+    "value": "First Day, 8-29-17\nLast Day, 5-23-18"
+}, {
     "id": "dateStart",
     "value": "8-27-17"
 }, {
@@ -76,7 +79,7 @@ Handlebars.registerHelper('td', function (dataIn) {
 
 });
 
-function rollMaker(peopleStr, daysOffStr, dateStartStr, dateEndStr, wantHightlighting) {
+function rollMaker(peopleStr, daysOffStr, commentDaysStr, dateStartStr, dateEndStr, wantHightlighting) {
     'use strict';
     var i, j, tempdate, htmlOut, currentMonth, currentWeek, peopleGroups,
         dateStart = moment(dateStartStr, 'M-D-YY'),
@@ -93,6 +96,13 @@ function rollMaker(peopleStr, daysOffStr, dateStartStr, dateEndStr, wantHightlig
             };
         }),
         daysOff = daysOffStr.trim().split('\n').map(function (row) {
+            var parts = row.split(',');
+            return {
+                name: parts[0].trim(),
+                date: moment(parts[1].trim(), 'M-D-YY')
+            };
+        }),
+        commentDays = commentDaysStr.trim().split('\n').map(function (row) {
             var parts = row.split(',');
             return {
                 name: parts[0].trim(),
@@ -202,13 +212,23 @@ function rollMaker(peopleStr, daysOffStr, dateStartStr, dateEndStr, wantHightlig
         //check current day is a weekday
         //filter out 0=Sundays and 6=Saturdays 
         if (tempdate.day() > 0 && tempdate.day() < 6) {
-            //record the dey of week
+            //record the day of week
             tempdate.DayOfWeek = tempdate.format('ddd');
             //is it a day off?
             for (j = 0; j < daysOff.length; j += 1) {
                 if (daysOff[j].date.isSame(tempdate)) {
                     tempdate.isDayOff = true;
                     tempdate.dayOffTitle = daysOff[j].name;
+                    //assume no repeats
+                    j = daysOff.length;
+                }
+            } 
+            //is it a Comment day?
+            for (j = 0; j < commentDays.length; j += 1) {
+                if (commentDays[j].date.isSame(tempdate)) {
+                    tempdate.isCommentDay = true;
+                    tempdate.comment = commentDays[j].name;
+                    //assume no repeats
                     j = daysOff.length;
                 }
             }
@@ -248,19 +268,14 @@ document.querySelector('#makeRolls').addEventListener('click', function () {
     'use strict';
     var studentsStr = document.querySelector('#names').value,
         daysOffStr = document.querySelector('#daysOff').value,
+        commentDaysStr = document.querySelector('#commentDays').value,
         dateStartStr = document.querySelector('#dateStart').value,
         dateEndStr = document.querySelector('#dateEnd').value,
         wantHightlighting = document.querySelector('#wantHightlighting').checked;
-    rollMaker(studentsStr, daysOffStr, dateStartStr, dateEndStr, wantHightlighting);
+    rollMaker(studentsStr, daysOffStr, commentDaysStr, dateStartStr, dateEndStr, wantHightlighting);
 });
 
 
-
-//make the feilds remember what was typed in
-var inputs = settingDefaults.map(function (setting) {
-        return document.getElementById(setting.id);
-    }),
-    localStorageVar = 'JAM.textInputs';
 
 function getKeysFilterId(objIn) {
     return Object.keys(objIn).filter(function (key) {
@@ -288,6 +303,13 @@ function saveSettings() {
     window.localStorage.setItem(localStorageVar, JSON.stringify(settingsOut));
 }
 
+//make the feilds remember what was typed in
+var inputs = settingDefaults.map(function (setting) {
+        return document.getElementById(setting.id);
+    }),
+    localStorageVar = 'JAM.textInputs';
+
+
 //add the event listeners to the text inputs
 inputs.forEach(function (ele) {
     ele.addEventListener('input', saveSettings);
@@ -297,7 +319,18 @@ inputs.forEach(function (ele) {
 
 function loadTextAreas() {
     var inputDatas = JSON.parse(window.localStorage.getItem(localStorageVar));
-    console.log('load', inputs);
+    
+    //add new ones to obj if code has changed
+    settingDefaults.forEach(function(setting){
+        var isNotOnList = inputDatas.every(function(inputData){
+            return inputData.id !== setting.id;
+        });
+        
+        if(isNotOnList) {
+            inputDatas.push(setting);
+        }
+    })
+    //put the data in the inputs
     inputDatas.forEach(function (inputData) {
         var keysNotIds = getKeysFilterId(inputData),
             ele = document.getElementById(inputData.id);
@@ -308,7 +341,10 @@ function loadTextAreas() {
         keysNotIds.forEach(function (key) {
             ele[key] = inputData[key];
         });
-    })
+    });
+    
+    //we save here just incase we had to add in a default that was not there
+    saveSettings();
 }
 
 //add the eventlistener for the button
