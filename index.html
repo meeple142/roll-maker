@@ -61,7 +61,9 @@
                 {{#each weeks as |week|}}
                     {{#each week as |day|}}
                         {{#if @first}}<td class="weekendBorder">{{else}}<td>{{/if}}
-                        {{comment}}</td>
+                {{#if comment}}<div>{{comment}}</div>{{/if}}
+                        
+                </td>
                     {{/each}}
                 {{/each}}
             </tr>

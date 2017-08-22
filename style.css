@@ -36,12 +36,19 @@ textarea {
 td {
     width: 0.3in;/*(10.5-2)/23 */
     height: 0.3in;
-    white-space: nowrap;
-    table-layout:fixed;
-    word-wrap:break-word;
     font-size: 0.15in;
 }
 
+tr:nth-child(1) td {
+    font-size: 0.1in;
+}
+
+/*
+td div {
+    width:0.3in;
+    text-align: center;
+}
+*/
 
 /*center the headings */
 
