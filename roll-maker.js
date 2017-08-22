@@ -229,7 +229,7 @@ function rollMaker(peopleStr, daysOffStr, commentDaysStr, dateStartStr, dateEndS
                     tempdate.isCommentDay = true;
                     tempdate.comment = commentDays[j].name;
                     //assume no repeats
-                    j = daysOff.length;
+                    j = commentDays.length;
                 }
             }
 
