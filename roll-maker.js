@@ -319,7 +319,9 @@ inputs.forEach(function (ele) {
 
 function loadTextAreas() {
     var inputDatas = JSON.parse(window.localStorage.getItem(localStorageVar));
-    
+    if(inputDatas === null){
+        inputDatas = settingDefaults;
+    }
     //add new ones to obj if code has changed
     settingDefaults.forEach(function(setting){
         var isNotOnList = inputDatas.every(function(inputData){

@@ -12,9 +12,11 @@ label {
 
 table {
     border-collapse: collapse;
-    margin: 10px auto;
+    margin: 10px;
+/*
     height: 7in;
     width: 10.5in;
+*/
 }
 
 table,
@@ -32,15 +34,20 @@ textarea {
 /*square up the boxes*/
 
 td {
-    min-width: 18px;
-    height: 18px;
+    width: 0.3in;/*(10.5-2)/23 */
+    height: 0.3in;
+    white-space: nowrap;
+    table-layout:fixed;
+    word-wrap:break-word;
+    font-size: 0.15in;
 }
 
 
 /*center the headings */
 
 tr:nth-child(1) td,
-tr:nth-child(2) td {
+tr:nth-child(2) td,
+tr:nth-child(3) td {
     text-align: center;
 }
 
@@ -72,13 +79,24 @@ tr:nth-child(3) td {
     border-top-width: 3px;
 }
 
+/*remove borders from the top row exvept the bottom*/
+
+tr:nth-child(1) td {
+    border-top-color: transparent;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-bottom-width: 3px;
+    
+}
 
 /*remove top left borders for topleft cells*/
 
 tr:nth-child(1) td:nth-child(1),
 tr:nth-child(1) td:nth-child(2),
 tr:nth-child(2) td:nth-child(1),
-tr:nth-child(2) td:nth-child(2) {
+tr:nth-child(2) td:nth-child(2),
+tr:nth-child(3) td:nth-child(1),
+tr:nth-child(3) td:nth-child(2) {
     border-color: transparent;
 }
 
@@ -86,13 +104,16 @@ tr:nth-child(2) td:nth-child(2) {
 /*line up the names and fix the borders*/
 
 tr td:nth-child(1) {
+    padding: 0;
     padding-right: 10px;
     padding-left: 10px;
     border-right-color: transparent;
+    width: 1.75in;
 }
 
 tr td:nth-child(2) {
     border-left-color: transparent;
+    width: 0.25in;
 }
 
 
