@@ -23,6 +23,10 @@ var settingDefaults = [{
     "checked": true
 }];
 
+//set up moment-range
+
+window['moment-range'].extendMoment(moment);
+
 Handlebars.registerHelper('td', function (dataIn) {
     'use strict';
 
@@ -81,9 +85,57 @@ Handlebars.registerHelper('td', function (dataIn) {
 
 function rollMaker(peopleStr, daysOffStr, commentDaysStr, dateStartStr, dateEndStr, wantHightlighting) {
     'use strict';
+
+    function expandDateRange(name, range) {
+        function makeMoment(str) {
+            return moment(str.trim(), 'M-D-YY')
+        }
+
+        function makeDate(name, momentDate) {
+            return {
+                name: name,
+                date: momentDate
+            }
+        }
+
+        var bounds = range.split('---').map(d => makeMoment(d)),
+            dateRange;
+
+        if (bounds.length === 1) {
+            return [makeDate(name, bounds[0])];
+        } else if (bounds.length === 2) {
+            dateRange = moment.range(bounds[0], bounds[1]);
+            return Array.from(dateRange.by('day')).map(function (date) {
+                return makeDate(name, date);
+            });
+        } else {
+            alert(name + ", " + range + "is in the wrong format.");
+            throw new Error(name + ", " + range + "is in the wrong format.");
+        }
+
+    }
+
+
+    function parseDateString(dateString) {
+        return dateString.trim().split('\n').reduce(function (listOut, row) {
+            var dates = row.split(','),
+                //the first date is really the title so take that off
+                name = dates.shift();
+            //go through all the dates and add them to the list
+            dates.forEach(function (date) {
+                //process range dates
+                var dateRangeList = expandDateRange(name, date);
+
+                listOut = listOut.concat(dateRangeList)
+
+            })
+            return listOut;
+        }, []);
+    }
+
     var i, j, tempdate, htmlOut, currentMonth, currentWeek, peopleGroups,
         dateStart = moment(dateStartStr, 'M-D-YY'),
-        dateCounter = moment(dateStart),
+        dateCounter,
         dateEnd = moment(dateEndStr, 'M-D-YY'),
         months = [],
         dayCount = dateEnd.diff(dateStart, 'days'),
@@ -95,20 +147,8 @@ function rollMaker(peopleStr, daysOffStr, commentDaysStr, dateStartStr, dateEndS
                 daysPresent: parts[1].trim().toUpperCase()
             };
         }),
-        daysOff = daysOffStr.trim().split('\n').map(function (row) {
-            var parts = row.split(',');
-            return {
-                name: parts[0].trim(),
-                date: moment(parts[1].trim(), 'M-D-YY')
-            };
-        }),
-        commentDays = commentDaysStr.trim().split('\n').map(function (row) {
-            var parts = row.split(',');
-            return {
-                name: parts[0].trim(),
-                date: moment(parts[1].trim(), 'M-D-YY')
-            };
-        });
+        daysOff = parseDateString(daysOffStr),
+        commentDays = parseDateString(commentDaysStr);
 
     console.log(dateStart);
     console.log(dateEnd);
@@ -190,6 +230,8 @@ function rollMaker(peopleStr, daysOffStr, commentDaysStr, dateStartStr, dateEndS
         dayCount *= -1;
     }
 
+    dateCounter = moment(dateStart);
+
     //make a list of all the days we want
     //months will be an array of weeks of arrays of days.
     for (i = 0; i <= dayCount; i += 1) {
@@ -222,7 +264,7 @@ function rollMaker(peopleStr, daysOffStr, commentDaysStr, dateStartStr, dateEndS
                     //assume no repeats
                     j = daysOff.length;
                 }
-            } 
+            }
             //is it a Comment day?
             for (j = 0; j < commentDays.length; j += 1) {
                 if (commentDays[j].date.isSame(tempdate)) {
@@ -319,16 +361,16 @@ inputs.forEach(function (ele) {
 
 function loadTextAreas() {
     var inputDatas = JSON.parse(window.localStorage.getItem(localStorageVar));
-    if(inputDatas === null){
+    if (inputDatas === null) {
         inputDatas = settingDefaults;
     }
     //add new ones to obj if code has changed
-    settingDefaults.forEach(function(setting){
-        var isNotOnList = inputDatas.every(function(inputData){
+    settingDefaults.forEach(function (setting) {
+        var isNotOnList = inputDatas.every(function (inputData) {
             return inputData.id !== setting.id;
         });
-        
-        if(isNotOnList) {
+
+        if (isNotOnList) {
             inputDatas.push(setting);
         }
     })
@@ -344,7 +386,7 @@ function loadTextAreas() {
             ele[key] = inputData[key];
         });
     });
-    
+
     //we save here just incase we had to add in a default that was not there
     saveSettings();
 }

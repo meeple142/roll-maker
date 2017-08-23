@@ -18,13 +18,23 @@
         <p>Type their name and then a comma and then either "m-f", "mwf", "tth" (can use upper or lower case).</p>
         <textarea id="names"></textarea>
 
-        <h3>Days Off</h3>
+        <h3>Date Format for Days Off and Comment Days</h3>
         <p>Put one day on each line. You do not need to sort at all, the program will do that.</p>
-        <p>Type the name of the event then type a comma and then the date in this format "M-D-YY"</p>
+        <p>Type the name of the event then type a comma and then the date in this format "M-D-YY".</p>
+        <p>Example: First Day, 8-29-17</p>
+        <p>If there are multiple days with events of the same name then just add another comma and then next date in the same format "M-D-YY". You can add as many dates as you want this way.</p>
+        <p>Example: Fun Day, 8-29-17, 8-31-17</p>
+        <p>If there is an event that spans multiple days, like Christmas Break, you can enter it in with three dashes between the start and end date.</p>
+        <p>Example: Christmas Break, 12-18-17---1-3-18</p>
+        <p>Also keep in mind, if you have an event that has single days and spans days, you can mix the two as well for something like this.</p>
+        <p>Example: PD Day, 10-12-17---10-16-17, 10-19-17, 10-24-17---11-1-17</p>
+
+        <h3>Days Off</h3>
+        <p>These are days off. Make sure you folow the format decribed above.</p>
         <textarea id="daysOff"></textarea>
-        
+
         <h3>Comment Days</h3>
-        <p>These days will show with a title above it. Put one day on each line. You do not need to sort at all, the program will do that.</p>
+        <p>These days will show with a title above it. Only one title can be displayed. The day's title listed highest on the list will display if there is an overlap. Make sure you folow the format decribed above.</p>
         <textarea id="commentDays"></textarea>
 
         <h3>Date Range</h3>
@@ -58,60 +68,50 @@
             <tr>
                 <td></td>
                 <td></td>
-                {{#each weeks as |week|}}
-                    {{#each week as |day|}}
-                        {{#if @first}}<td class="weekendBorder">{{else}}<td>{{/if}}
-                {{#if comment}}<div>{{comment}}</div>{{/if}}
-                        
-                </td>
-                    {{/each}}
-                {{/each}}
+                {{#each weeks as |week|}} {{#each week as |day|}} {{#if @first}}
+                <td class="weekendBorder">{{else}}
+                    <td>{{/if}} {{#if comment}}
+                        <div>{{comment}}</div>{{/if}}
+
+                    </td>
+                    {{/each}} {{/each}}
             </tr>
             <!--  days of week -->
             <tr>
                 <td></td>
                 <td></td>
-                {{#each weeks as |week|}}
-                    {{#each week as |day|}}
-                        {{#if @first}}<td class="weekendBorder">{{else}}<td>{{/if}}
-                        {{dayLetter day}}</td>
-                    {{/each}}
-                {{/each}}
+                {{#each weeks as |week|}} {{#each week as |day|}} {{#if @first}}
+                <td class="weekendBorder">{{else}}
+                    <td>{{/if}} {{dayLetter day}}</td>
+                    {{/each}} {{/each}}
             </tr>
             <!--  day of month -->
             <tr>
                 <td></td>
                 <td></td>
-                {{#each weeks as |week|}}
-                    {{#each week as |day|}}
-                        {{#if @first}}<td class="weekendBorder">{{else}}<td>{{/if}}
-                        {{dayNumber day}}</td>
-                    {{/each}}
-                {{/each}}
+                {{#each weeks as |week|}} {{#each week as |day|}} {{#if @first}}
+                <td class="weekendBorder">{{else}}
+                    <td>{{/if}} {{dayNumber day}}</td>
+                    {{/each}} {{/each}}
             </tr>
             <!--  a row for each person -->
-            {{#each peopleGroups as |group|}}
-                {{#each people}}
-                    <tr class='{{group.name}} {{#if @first}}peopleGroup{{/if}}'>
-                        <td>{{name}}</td>
-                        <td>{{daysPresent}}</td>
-                            {{#each ../../weeks as |week|}}
-                                {{#each week as |day|}}
-                                    {{td}}
-                                {{/each}}
-                            {{/each}}
+            {{#each peopleGroups as |group|}} {{#each people}}
+            <tr class='{{group.name}} {{#if @first}}peopleGroup{{/if}}'>
+                <td>{{name}}</td>
+                <td>{{daysPresent}}</td>
+                {{#each ../../weeks as |week|}} {{#each week as |day|}} {{td}} {{/each}} {{/each}}
 
-                        </tr>
-                {{/each}}
-            {{/each}}
+            </tr>
+            {{/each}} {{/each}}
 
-        </table>
+            </table>
 
     </script>
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.10/handlebars.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-range/3.0.3/moment-range.min.js"></script>
     <script src="roll-maker.js"></script>
 </body>
 
