@@ -406,3 +406,7 @@ function resetInputs() {
 
 //add the eventListener for resetInputs button
 document.querySelector('#resetInputs').addEventListener('click', resetInputs);
+//add the eventListener for the print button
+document.querySelector('#print').addEventListener('click', function () {
+    window.print();
+});
