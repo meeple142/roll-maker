@@ -131,7 +131,7 @@ tr td:nth-child(2) {
 .wantHighlighing .MWF td.Fri,
 .wantHighlighing .TTH td.Tue,
 .wantHighlighing .TTH td.Thu {
-    background-color: 3f3f3f;
+    background-color: hsl(0, 0%, 90%);
 }
 
 
@@ -166,7 +166,7 @@ tr td:nth-child(2) {
     max-width: 18px;
     white-space: nowrap;
     vertical-align: top;
-    background-color: 3f3f3f;
+    background-color: hsl(0, 0%, 90%);
 }
 
 .dayOff > div {
