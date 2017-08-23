@@ -166,11 +166,11 @@ tr td:nth-child(2) {
     max-width: 18px;
     white-space: nowrap;
     vertical-align: top;
-    background-color: dimgray;
+    background-color: lightgray;
 }
 
 .dayOff > div {
     transform: translateY(15px) rotate(90deg);
     font-weight: bold;
-    color: white;
+    color: black;
 }
