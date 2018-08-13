@@ -150,8 +150,8 @@ function rollMaker(peopleStr, daysOffStr, commentDaysStr, dateStartStr, dateEndS
         daysOff = parseDateString(daysOffStr),
         commentDays = parseDateString(commentDaysStr);
 
-    console.log(dateStart);
-    console.log(dateEnd);
+    console.log("dateStart",dateStart);
+    console.log("dateEnd",dateEnd);
 
     //fix up handlebars
     Handlebars.registerHelper('dayLetter', function (day) {
@@ -282,9 +282,13 @@ function rollMaker(peopleStr, daysOffStr, commentDaysStr, dateStartStr, dateEndS
         dateCounter.add(1, 'days');
     }
 
+    //because we skip sats and suns we can have weeks that are empty
+    //remove empty weeks
+    months = months.map(month => month.filter(week.length > 0));
+    
     //for testing
-    console.log(months);
-    console.log(peopleGroups);
+    console.log("months",months);
+    console.log("peopleGroups", peopleGroups);
 
 
 
@@ -379,7 +383,7 @@ function loadTextAreas() {
         var keysNotIds = getKeysFilterId(inputData),
             ele = document.getElementById(inputData.id);
 
-        console.log(inputData)
+        console.log("inputData", inputData)
 
         //set all the values 
         keysNotIds.forEach(function (key) {
