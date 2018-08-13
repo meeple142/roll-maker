@@ -284,7 +284,7 @@ function rollMaker(peopleStr, daysOffStr, commentDaysStr, dateStartStr, dateEndS
 
     //because we skip sats and suns we can have weeks that are empty
     //remove empty weeks
-    months = months.map(month => month.filter(week.length > 0));
+    months = months.map(month => month.filter(week => week.length > 0));
     
     //for testing
     console.log("months",months);
